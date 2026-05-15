@@ -88,6 +88,7 @@ export const GetSubjectsResponseItem = zod.object({
   "description": zod.string(),
   "icon": zod.string(),
   "color": zod.string(),
+  "level": zod.string(),
   "chapterCount": zod.number(),
   "mcqCount": zod.number(),
   "isActive": zod.boolean(),
@@ -102,9 +103,11 @@ export const GetSubjectsResponse = zod.array(GetSubjectsResponseItem)
  */
 export const CreateSubjectBody = zod.object({
   "name": zod.string(),
-  "description": zod.string(),
-  "icon": zod.string(),
-  "color": zod.string(),
+  "description": zod.string().optional(),
+  "icon": zod.string().optional(),
+  "color": zod.string().optional(),
+  "level": zod.string().optional(),
+  "isActive": zod.boolean().optional(),
   "order": zod.number().optional()
 })
 
@@ -122,6 +125,7 @@ export const GetSubjectResponse = zod.object({
   "description": zod.string(),
   "icon": zod.string(),
   "color": zod.string(),
+  "level": zod.string(),
   "chapterCount": zod.number(),
   "mcqCount": zod.number(),
   "isActive": zod.boolean(),
@@ -142,6 +146,7 @@ export const UpdateSubjectBody = zod.object({
   "description": zod.string().optional(),
   "icon": zod.string().optional(),
   "color": zod.string().optional(),
+  "level": zod.string().optional(),
   "isActive": zod.boolean().optional(),
   "order": zod.number().optional()
 })
@@ -152,6 +157,7 @@ export const UpdateSubjectResponse = zod.object({
   "description": zod.string(),
   "icon": zod.string(),
   "color": zod.string(),
+  "level": zod.string(),
   "chapterCount": zod.number(),
   "mcqCount": zod.number(),
   "isActive": zod.boolean(),

@@ -12,6 +12,7 @@ export interface Subject {
   description: string;
   icon: string;
   color: string;
+  level: string;
   chapterCount: number;
   mcqCount: number;
   isActive: boolean;

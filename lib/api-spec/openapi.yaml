@@ -977,7 +977,7 @@ components:
     # Subject schemas
     Subject:
       type: object
-      required: [id, name, description, icon, color, chapterCount, mcqCount, isActive]
+      required: [id, name, description, icon, color, level, chapterCount, mcqCount, isActive]
       properties:
         id:
           type: integer
@@ -988,6 +988,8 @@ components:
         icon:
           type: string
         color:
+          type: string
+        level:
           type: string
         chapterCount:
           type: integer
@@ -1002,7 +1004,7 @@ components:
 
     SubjectInput:
       type: object
-      required: [name, description, icon, color]
+      required: [name]
       properties:
         name:
           type: string
@@ -1012,6 +1014,10 @@ components:
           type: string
         color:
           type: string
+        level:
+          type: string
+        isActive:
+          type: boolean
         order:
           type: integer
 
@@ -1025,6 +1031,8 @@ components:
         icon:
           type: string
         color:
+          type: string
+        level:
           type: string
         isActive:
           type: boolean

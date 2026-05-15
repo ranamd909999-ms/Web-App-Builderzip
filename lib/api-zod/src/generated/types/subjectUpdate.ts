@@ -11,6 +11,7 @@ export interface SubjectUpdate {
   description?: string;
   icon?: string;
   color?: string;
+  level?: string;
   isActive?: boolean;
   order?: number;
 }

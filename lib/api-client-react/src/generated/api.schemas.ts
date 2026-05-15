@@ -78,6 +78,7 @@ export interface Subject {
   description: string;
   icon: string;
   color: string;
+  level: string;
   chapterCount: number;
   mcqCount: number;
   isActive: boolean;
@@ -87,9 +88,11 @@ export interface Subject {
 
 export interface SubjectInput {
   name: string;
-  description: string;
-  icon: string;
-  color: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+  level?: string;
+  isActive?: boolean;
   order?: number;
 }
 
@@ -98,6 +101,7 @@ export interface SubjectUpdate {
   description?: string;
   icon?: string;
   color?: string;
+  level?: string;
   isActive?: boolean;
   order?: number;
 }

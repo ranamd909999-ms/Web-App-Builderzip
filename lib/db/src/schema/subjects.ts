@@ -8,6 +8,7 @@ export const subjectsTable = pgTable("subjects", {
   description: text("description").notNull().default(""),
   icon: text("icon").notNull().default("BookOpen"),
   color: text("color").notNull().default("#6366f1"),
+  level: text("level").notNull().default(""),
   isActive: boolean("is_active").notNull().default(true),
   order: integer("order").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
