@@ -12,6 +12,7 @@ import resultsRouter from "./results";
 import statsRouter from "./stats";
 import adminRouter from "./admin";
 import usersRouter from "./users";
+import notificationsRouter from "./notifications";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use(resultsRouter);
 router.use(statsRouter);
 router.use(adminRouter);
 router.use(usersRouter);
+router.use(notificationsRouter);
 
 export default router;

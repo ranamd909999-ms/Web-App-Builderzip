@@ -878,3 +878,115 @@ export const UpdateMyProfileResponse = zod.object({
 })
 
 
+/**
+ * @summary List all notifications (admin)
+ */
+export const GetNotificationsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "message": zod.string(),
+  "type": zod.string(),
+  "targetType": zod.string(),
+  "targetUserId": zod.number().nullish(),
+  "targetSubjectId": zod.number().nullish(),
+  "isImportant": zod.boolean(),
+  "scheduledAt": zod.string().nullish(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string(),
+  "isRead": zod.boolean().optional()
+})
+export const GetNotificationsResponse = zod.array(GetNotificationsResponseItem)
+
+
+/**
+ * @summary Create and send a notification (admin)
+ */
+export const CreateNotificationBody = zod.object({
+  "title": zod.string(),
+  "message": zod.string(),
+  "type": zod.string().optional(),
+  "targetType": zod.string().optional(),
+  "targetUserId": zod.number().optional(),
+  "targetSubjectId": zod.number().optional(),
+  "isImportant": zod.boolean().optional(),
+  "scheduledAt": zod.string().optional()
+})
+
+
+/**
+ * @summary Update a notification (admin)
+ */
+export const UpdateNotificationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateNotificationBody = zod.object({
+  "title": zod.string().optional(),
+  "message": zod.string().optional(),
+  "type": zod.string().optional(),
+  "isImportant": zod.boolean().optional()
+})
+
+export const UpdateNotificationResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "message": zod.string(),
+  "type": zod.string(),
+  "targetType": zod.string(),
+  "targetUserId": zod.number().nullish(),
+  "targetSubjectId": zod.number().nullish(),
+  "isImportant": zod.boolean(),
+  "scheduledAt": zod.string().nullish(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string(),
+  "isRead": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Delete a notification (admin)
+ */
+export const DeleteNotificationParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Get notifications for the current user
+ */
+export const GetMyNotificationsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "message": zod.string(),
+  "type": zod.string(),
+  "targetType": zod.string(),
+  "targetUserId": zod.number().nullish(),
+  "targetSubjectId": zod.number().nullish(),
+  "isImportant": zod.boolean(),
+  "scheduledAt": zod.string().nullish(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string(),
+  "isRead": zod.boolean().optional()
+})
+export const GetMyNotificationsResponse = zod.array(GetMyNotificationsResponseItem)
+
+
+/**
+ * @summary Mark a notification as read
+ */
+export const MarkNotificationReadParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
+ * @summary Get unread notification count for current user
+ */
+export const GetUnreadCountResponse = zod.object({
+  "unreadCount": zod.number()
+})
+
+

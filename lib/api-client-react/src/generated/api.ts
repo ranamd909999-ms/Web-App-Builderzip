@@ -47,6 +47,9 @@ import type {
   McqListResponse,
   McqUpdate,
   MessageResponse,
+  Notification,
+  NotificationInput,
+  NotificationUpdate,
   ProfileUpdate,
   ProgressEntry,
   RegisterInput,
@@ -54,6 +57,7 @@ import type {
   SubjectInput,
   SubjectReport,
   SubjectUpdate,
+  UnreadCount,
   User,
   UserListResponse,
   UserProfile
@@ -3271,4 +3275,518 @@ export const useUpdateMyProfile = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getUpdateMyProfileMutationOptions(options));
     }
+
+export const getGetNotificationsUrl = () => {
+
+
+
+
+  return `/api/notifications`
+}
+
+/**
+ * @summary List all notifications (admin)
+ */
+export const getNotifications = async ( options?: RequestInit): Promise<Notification[]> => {
+
+  return customFetch<Notification[]>(getGetNotificationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetNotificationsQueryKey = () => {
+    return [
+    `/api/notifications`
+    ] as const;
+    }
+
+
+export const getGetNotificationsQueryOptions = <TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNotificationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotifications>>> = ({ signal }) => getNotifications({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getNotifications>>>
+export type GetNotificationsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all notifications (admin)
+ */
+
+export function useGetNotifications<TData = Awaited<ReturnType<typeof getNotifications>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNotifications>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetNotificationsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreateNotificationUrl = () => {
+
+
+
+
+  return `/api/notifications`
+}
+
+/**
+ * @summary Create and send a notification (admin)
+ */
+export const createNotification = async (notificationInput: NotificationInput, options?: RequestInit): Promise<Notification> => {
+
+  return customFetch<Notification>(getCreateNotificationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      notificationInput,)
+  }
+);}
+
+
+
+
+export const getCreateNotificationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNotification>>, TError,{data: BodyType<NotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createNotification>>, TError,{data: BodyType<NotificationInput>}, TContext> => {
+
+const mutationKey = ['createNotification'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createNotification>>, {data: BodyType<NotificationInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createNotification(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateNotificationMutationResult = NonNullable<Awaited<ReturnType<typeof createNotification>>>
+    export type CreateNotificationMutationBody = BodyType<NotificationInput>
+    export type CreateNotificationMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Create and send a notification (admin)
+ */
+export const useCreateNotification = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNotification>>, TError,{data: BodyType<NotificationInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createNotification>>,
+        TError,
+        {data: BodyType<NotificationInput>},
+        TContext
+      > => {
+      return useMutation(getCreateNotificationMutationOptions(options));
+    }
+
+export const getUpdateNotificationUrl = (id: number,) => {
+
+
+
+
+  return `/api/notifications/${id}`
+}
+
+/**
+ * @summary Update a notification (admin)
+ */
+export const updateNotification = async (id: number,
+    notificationUpdate: NotificationUpdate, options?: RequestInit): Promise<Notification> => {
+
+  return customFetch<Notification>(getUpdateNotificationUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      notificationUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateNotificationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotification>>, TError,{id: number;data: BodyType<NotificationUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateNotification>>, TError,{id: number;data: BodyType<NotificationUpdate>}, TContext> => {
+
+const mutationKey = ['updateNotification'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateNotification>>, {id: number;data: BodyType<NotificationUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateNotification(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateNotificationMutationResult = NonNullable<Awaited<ReturnType<typeof updateNotification>>>
+    export type UpdateNotificationMutationBody = BodyType<NotificationUpdate>
+    export type UpdateNotificationMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Update a notification (admin)
+ */
+export const useUpdateNotification = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateNotification>>, TError,{id: number;data: BodyType<NotificationUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateNotification>>,
+        TError,
+        {id: number;data: BodyType<NotificationUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateNotificationMutationOptions(options));
+    }
+
+export const getDeleteNotificationUrl = (id: number,) => {
+
+
+
+
+  return `/api/notifications/${id}`
+}
+
+/**
+ * @summary Delete a notification (admin)
+ */
+export const deleteNotification = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteNotificationUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteNotificationMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteNotification>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteNotification>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteNotification'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteNotification>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteNotification(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteNotificationMutationResult = NonNullable<Awaited<ReturnType<typeof deleteNotification>>>
+
+    export type DeleteNotificationMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Delete a notification (admin)
+ */
+export const useDeleteNotification = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteNotification>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteNotification>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteNotificationMutationOptions(options));
+    }
+
+export const getGetMyNotificationsUrl = () => {
+
+
+
+
+  return `/api/notifications/me`
+}
+
+/**
+ * @summary Get notifications for the current user
+ */
+export const getMyNotifications = async ( options?: RequestInit): Promise<Notification[]> => {
+
+  return customFetch<Notification[]>(getGetMyNotificationsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMyNotificationsQueryKey = () => {
+    return [
+    `/api/notifications/me`
+    ] as const;
+    }
+
+
+export const getGetMyNotificationsQueryOptions = <TData = Awaited<ReturnType<typeof getMyNotifications>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyNotifications>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMyNotificationsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyNotifications>>> = ({ signal }) => getMyNotifications({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMyNotifications>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMyNotificationsQueryResult = NonNullable<Awaited<ReturnType<typeof getMyNotifications>>>
+export type GetMyNotificationsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get notifications for the current user
+ */
+
+export function useGetMyNotifications<TData = Awaited<ReturnType<typeof getMyNotifications>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMyNotifications>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMyNotificationsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getMarkNotificationReadUrl = (id: number,) => {
+
+
+
+
+  return `/api/notifications/${id}/read`
+}
+
+/**
+ * @summary Mark a notification as read
+ */
+export const markNotificationRead = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getMarkNotificationReadUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getMarkNotificationReadMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNotificationRead>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof markNotificationRead>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['markNotificationRead'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof markNotificationRead>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  markNotificationRead(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type MarkNotificationReadMutationResult = NonNullable<Awaited<ReturnType<typeof markNotificationRead>>>
+
+    export type MarkNotificationReadMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Mark a notification as read
+ */
+export const useMarkNotificationRead = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof markNotificationRead>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof markNotificationRead>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getMarkNotificationReadMutationOptions(options));
+    }
+
+export const getGetUnreadCountUrl = () => {
+
+
+
+
+  return `/api/notifications/me/unread-count`
+}
+
+/**
+ * @summary Get unread notification count for current user
+ */
+export const getUnreadCount = async ( options?: RequestInit): Promise<UnreadCount> => {
+
+  return customFetch<UnreadCount>(getGetUnreadCountUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetUnreadCountQueryKey = () => {
+    return [
+    `/api/notifications/me/unread-count`
+    ] as const;
+    }
+
+
+export const getGetUnreadCountQueryOptions = <TData = Awaited<ReturnType<typeof getUnreadCount>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUnreadCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetUnreadCountQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUnreadCount>>> = ({ signal }) => getUnreadCount({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUnreadCount>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetUnreadCountQueryResult = NonNullable<Awaited<ReturnType<typeof getUnreadCount>>>
+export type GetUnreadCountQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get unread notification count for current user
+ */
+
+export function useGetUnreadCount<TData = Awaited<ReturnType<typeof getUnreadCount>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getUnreadCount>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetUnreadCountQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 

@@ -408,6 +408,44 @@ export interface SubjectReport {
   chapterCount: number;
 }
 
+export interface Notification {
+  id: number;
+  title: string;
+  message: string;
+  type: string;
+  targetType: string;
+  targetUserId?: number | null;
+  targetSubjectId?: number | null;
+  isImportant: boolean;
+  scheduledAt?: string | null;
+  createdBy: number;
+  createdAt: string;
+  updatedAt: string;
+  isRead?: boolean;
+}
+
+export interface NotificationInput {
+  title: string;
+  message: string;
+  type?: string;
+  targetType?: string;
+  targetUserId?: number;
+  targetSubjectId?: number;
+  isImportant?: boolean;
+  scheduledAt?: string;
+}
+
+export interface NotificationUpdate {
+  title?: string;
+  message?: string;
+  type?: string;
+  isImportant?: boolean;
+}
+
+export interface UnreadCount {
+  unreadCount: number;
+}
+
 export type GetMcqsParams = {
 chapterId?: number;
 subjectId?: number;

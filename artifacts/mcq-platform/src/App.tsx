@@ -34,6 +34,7 @@ import AdminChapters from "@/pages/admin/AdminChapters";
 import AdminMcqs from "@/pages/admin/AdminMcqs";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminReports from "@/pages/admin/AdminReports";
+import AdminNotifications from "@/pages/admin/AdminNotifications";
 
 setAuthTokenGetter(() => localStorage.getItem("token"));
 
@@ -120,6 +121,7 @@ function Router() {
       <Route path="/admin/mcqs"><ProtectedRoute component={AdminMcqs} adminOnly /></Route>
       <Route path="/admin/users"><ProtectedRoute component={AdminUsers} adminOnly /></Route>
       <Route path="/admin/reports"><ProtectedRoute component={AdminReports} adminOnly /></Route>
+      <Route path="/admin/notifications"><ProtectedRoute component={AdminNotifications} adminOnly /></Route>
 
       <Route component={NotFound} />
     </Switch>

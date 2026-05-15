@@ -31,6 +31,8 @@ tags:
     description: Admin operations
   - name: stats
     description: Statistics and analytics
+  - name: notifications
+    description: Notification management
 
 paths:
   /healthz:
@@ -867,6 +869,119 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
 
+  /notifications:
+    get:
+      operationId: getNotifications
+      tags: [notifications]
+      summary: List all notifications (admin)
+      responses:
+        "200":
+          description: List of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+    post:
+      operationId: createNotification
+      tags: [notifications]
+      summary: Create and send a notification (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationInput"
+      responses:
+        "201":
+          description: Created notification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}:
+    patch:
+      operationId: updateNotification
+      tags: [notifications]
+      summary: Update a notification (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationUpdate"
+      responses:
+        "200":
+          description: Updated notification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+    delete:
+      operationId: deleteNotification
+      tags: [notifications]
+      summary: Delete a notification (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+
+  /notifications/me:
+    get:
+      operationId: getMyNotifications
+      tags: [notifications]
+      summary: Get notifications for the current user
+      responses:
+        "200":
+          description: My notifications with read status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /notifications/{id}/read:
+    post:
+      operationId: markNotificationRead
+      tags: [notifications]
+      summary: Mark a notification as read
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Marked as read
+
+  /notifications/me/unread-count:
+    get:
+      operationId: getUnreadCount
+      tags: [notifications]
+      summary: Get unread notification count for current user
+      responses:
+        "200":
+          description: Unread count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnreadCount"
+
 components:
   schemas:
     HealthStatus:
@@ -1508,4 +1623,78 @@ components:
         avgAccuracy:
           type: number
         chapterCount:
+          type: integer
+
+    Notification:
+      type: object
+      required: [id, title, message, type, targetType, isImportant, createdBy, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        targetType:
+          type: string
+        targetUserId:
+          type: integer
+          nullable: true
+        targetSubjectId:
+          type: integer
+          nullable: true
+        isImportant:
+          type: boolean
+        scheduledAt:
+          type: string
+          nullable: true
+        createdBy:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        isRead:
+          type: boolean
+
+    NotificationInput:
+      type: object
+      required: [title, message]
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        targetType:
+          type: string
+        targetUserId:
+          type: integer
+        targetSubjectId:
+          type: integer
+        isImportant:
+          type: boolean
+        scheduledAt:
+          type: string
+
+    NotificationUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        isImportant:
+          type: boolean
+
+    UnreadCount:
+      type: object
+      required: [unreadCount]
+      properties:
+        unreadCount:
           type: integer
