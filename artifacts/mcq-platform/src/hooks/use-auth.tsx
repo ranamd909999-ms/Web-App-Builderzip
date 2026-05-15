@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useGetMe, useLogin, useLogout, useRegister, getGetMeQueryKey } from "@workspace/api-client-react";
 import type { User, LoginInput, RegisterInput } from "@workspace/api-client-react";
 import { useLocation } from "wouter";
@@ -6,6 +7,7 @@ import { useLocation } from "wouter";
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  isAuthLoading: boolean;
   login: (data: LoginInput) => Promise<void>;
   register: (data: RegisterInput) => Promise<void>;
   logout: () => Promise<void>;
@@ -17,13 +19,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [, setLocation] = useLocation();
+  const queryClient = useQueryClient();
 
   const { data: user, isLoading: isUserLoading, refetch } = useGetMe({
     query: {
       queryKey: getGetMeQueryKey(),
       enabled: !!token,
       retry: false,
-    }
+      staleTime: 60_000,
+    },
   });
 
   const loginMutation = useLogin();
@@ -35,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("token", res.token);
     setToken(res.token);
     await refetch();
-    setLocation("/dashboard");
+    setLocation(res.user.role === "admin" ? "/admin" : "/dashboard");
   };
 
   const register = async (data: RegisterInput) => {
@@ -52,15 +56,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       localStorage.removeItem("token");
       setToken(null);
+      queryClient.clear();
       setLocation("/login");
     }
   };
 
-  const isLoading = isUserLoading || loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending;
+  const isAuthLoading = !!token && isUserLoading;
+  const isLoading =
+    isAuthLoading ||
+    loginMutation.isPending ||
+    registerMutation.isPending ||
+    logoutMutation.isPending;
   const isAdmin = user?.role === "admin";
 
   return (
-    <AuthContext.Provider value={{ user: user || null, isLoading, login, register, logout, isAdmin }}>
+    <AuthContext.Provider
+      value={{ user: user ?? null, isLoading, isAuthLoading, login, register, logout, isAdmin }}
+    >
       {children}
     </AuthContext.Provider>
   );

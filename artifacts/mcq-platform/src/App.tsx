@@ -44,54 +44,49 @@ const queryClient = new QueryClient({
   },
 });
 
+const Spinner = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
+  </div>
+);
+
 function ProtectedRoute({ component: Component, adminOnly = false }: { component: React.ComponentType; adminOnly?: boolean }) {
-  const { user, isLoading, isAdmin } = useAuth();
+  const { user, isAuthLoading, isAdmin } = useAuth();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if (!isLoading && !user) setLocation("/login");
-    else if (!isLoading && adminOnly && !isAdmin) setLocation("/dashboard");
-  }, [user, isLoading, isAdmin, adminOnly, setLocation]);
+    if (!isAuthLoading && !user) setLocation("/login");
+    else if (!isAuthLoading && user && adminOnly && !isAdmin) setLocation("/dashboard");
+  }, [user, isAuthLoading, isAdmin, adminOnly, setLocation]);
 
-  if (isLoading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-    </div>
-  );
-  if (!user || (adminOnly && !isAdmin)) return null;
+  if (isAuthLoading) return <Spinner />;
+  if (!user) return null;
+  if (adminOnly && !isAdmin) return null;
   return <Component />;
 }
 
 function PublicRoute({ component: Component }: { component: React.ComponentType }) {
-  const { user, isLoading } = useAuth();
+  const { user, isAuthLoading, isAdmin } = useAuth();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if (!isLoading && user) setLocation("/dashboard");
-  }, [user, isLoading, setLocation]);
+    if (!isAuthLoading && user) setLocation(isAdmin ? "/admin" : "/dashboard");
+  }, [user, isAuthLoading, isAdmin, setLocation]);
 
-  if (isLoading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-    </div>
-  );
+  if (isAuthLoading) return <Spinner />;
   if (user) return null;
   return <Component />;
 }
 
 function HomeRoute() {
-  const { user, isLoading } = useAuth();
+  const { user, isAuthLoading, isAdmin } = useAuth();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if (!isLoading && user) setLocation("/dashboard");
-  }, [user, isLoading, setLocation]);
+    if (!isAuthLoading && user) setLocation(isAdmin ? "/admin" : "/dashboard");
+  }, [user, isAuthLoading, isAdmin, setLocation]);
 
-  if (isLoading) return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
-    </div>
-  );
+  if (isAuthLoading) return <Spinner />;
   if (user) return null;
   return <Landing />;
 }

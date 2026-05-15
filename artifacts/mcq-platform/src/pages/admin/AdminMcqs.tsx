@@ -4,8 +4,9 @@ import { useGetSubjects, useGetChapters, useGetMcqs, useCreateMcq, useUpdateMcq,
 import { getGetChaptersQueryKey, getGetMcqsQueryKey } from "@workspace/api-client-react";
 import type { Mcq } from "@workspace/api-client-react";
 import Layout from "@/components/Layout";
-import { Plus, Pencil, Trash2, Zap, X, CheckCircle } from "lucide-react";
+import { Plus, Pencil, Trash2, Zap, X, CheckCircle, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
+import BulkImportModal from "./BulkImportModal";
 
 function McqModal({ mcq, onClose, onSave }: { mcq?: Mcq | null; onClose: () => void; onSave: () => void }) {
   const { data: subjects } = useGetSubjects();
@@ -140,6 +141,7 @@ export default function AdminMcqs() {
   );
   const deleteMut = useDeleteMcq();
   const [modal, setModal] = useState<{ open: boolean; mcq?: Mcq | null }>({ open: false });
+  const [bulkImportOpen, setBulkImportOpen] = useState(false);
 
   const mcqs = data?.mcqs ?? [];
 
@@ -159,10 +161,16 @@ export default function AdminMcqs() {
             <h1 className="text-2xl font-bold mb-1">MCQs</h1>
             <p className="text-muted-foreground text-sm">{mcqs.length} question{mcqs.length !== 1 ? "s" : ""} shown</p>
           </div>
-          <button onClick={() => setModal({ open: true, mcq: null })}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90">
-            <Plus size={16} /> Add MCQ
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setBulkImportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-secondary text-foreground text-sm font-medium rounded-lg hover:bg-secondary/80 border border-border">
+              <Upload size={16} /> Bulk Import
+            </button>
+            <button onClick={() => setModal({ open: true, mcq: null })}
+              className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90">
+              <Plus size={16} /> Add MCQ
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-3 mb-6">
@@ -226,6 +234,9 @@ export default function AdminMcqs() {
       </div>
       {modal.open && (
         <McqModal mcq={modal.mcq} onClose={() => setModal({ open: false })} onSave={refetch} />
+      )}
+      {bulkImportOpen && (
+        <BulkImportModal onClose={() => setBulkImportOpen(false)} onImported={refetch} />
       )}
     </Layout>
   );
