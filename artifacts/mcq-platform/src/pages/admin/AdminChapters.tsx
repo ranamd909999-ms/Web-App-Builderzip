@@ -60,7 +60,7 @@ function ChapterModal({ chapter, subjectId: defaultSubjectId, onClose, onSave }:
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Description</label>
-            <textarea value={form.description} onChange={set("description") as any} rows={3} placeholder="Brief description..."
+            <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} placeholder="Brief description..."
               className="w-full px-4 py-2.5 rounded-lg bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none" />
           </div>
           <div>

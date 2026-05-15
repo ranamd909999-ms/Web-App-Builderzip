@@ -49,7 +49,7 @@ function SubjectModal({ subject, onClose, onSave }: { subject?: Subject | null; 
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">Description</label>
-            <textarea value={form.description} onChange={set("description") as any} placeholder="A brief description..." rows={3}
+            <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="A brief description..." rows={3}
               className="w-full px-4 py-2.5 rounded-lg bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none" />
           </div>
           <div>

@@ -29,13 +29,17 @@ function McqModal({ mcq, onClose, onSave }: { mcq?: Mcq | null; onClose: () => v
     setForm(f => { const o = [...f.options]; o[idx] = val; return { ...f, options: o }; });
 
   const handleSave = async () => {
-    if (mcq) {
-      await updateMut.mutateAsync({ id: mcq.id, data: { question: form.question, options: form.options, correctOption: form.correctOption, explanation: form.explanation, difficulty: form.difficulty } });
-    } else {
-      await createMut.mutateAsync({ data: { chapterId: form.chapterId, question: form.question, options: form.options, correctOption: form.correctOption, explanation: form.explanation, difficulty: form.difficulty } });
+    try {
+      if (mcq) {
+        await updateMut.mutateAsync({ id: mcq.id, data: { question: form.question, options: form.options, correctOption: form.correctOption, explanation: form.explanation, difficulty: form.difficulty } });
+      } else {
+        await createMut.mutateAsync({ data: { chapterId: form.chapterId, question: form.question, options: form.options, correctOption: form.correctOption, explanation: form.explanation, difficulty: form.difficulty } });
+      }
+      onSave();
+      onClose();
+    } catch (err) {
+      console.error("Failed to save MCQ", err);
     }
-    onSave();
-    onClose();
   };
 
   const isPending = createMut.isPending || updateMut.isPending;

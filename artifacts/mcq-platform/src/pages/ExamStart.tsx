@@ -15,8 +15,9 @@ export default function ExamStart() {
   const preType = params.get("type");
   const [, setLocation] = useLocation();
 
+  const validExamTypes = ["practice", "timed", "full"] as const;
   const [examType, setExamType] = useState<"practice" | "timed" | "full">(
-    (preType as any) ?? "timed"
+    validExamTypes.includes(preType as "practice" | "timed" | "full") ? (preType as "practice" | "timed" | "full") : "timed"
   );
   const [selectedSubjectId, setSelectedSubjectId] = useState<number | null>(preSubjectId ? parseInt(preSubjectId) : null);
   const [selectedChapterIds, setSelectedChapterIds] = useState<number[]>(preChapterId ? [parseInt(preChapterId)] : []);
