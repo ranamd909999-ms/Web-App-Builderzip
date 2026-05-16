@@ -394,9 +394,56 @@ export interface AdminStats {
   totalSubjects: number;
   totalChapters: number;
   totalExams: number;
+  totalSessions?: number;
   premiumUsers: number;
   bannedUsers: number;
   recentRegistrations?: User[];
+}
+
+export interface AdminExam {
+  id: number;
+  title: string;
+  description?: string | null;
+  subjectId?: number | null;
+  subjectName?: string | null;
+  chapterIds?: number[];
+  mcqIds?: number[];
+  durationMinutes: number;
+  totalMarks: number;
+  passMarks: number;
+  isPublished: boolean;
+  questionCount: number;
+  createdBy: number;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export type AdminExamDetail = AdminExam & {
+  mcqs?: Mcq[];
+};
+
+export interface AdminExamInput {
+  title: string;
+  description?: string;
+  subjectId?: number;
+  chapterIds?: number[];
+  mcqIds?: number[];
+  durationMinutes?: number;
+  totalMarks?: number;
+  passMarks?: number;
+  isPublished?: boolean;
+}
+
+export interface AdminExamUpdate {
+  title?: string;
+  description?: string;
+  subjectId?: number;
+  chapterIds?: number[];
+  mcqIds?: number[];
+  durationMinutes?: number;
+  totalMarks?: number;
+  passMarks?: number;
+  isPublished?: boolean;
 }
 
 export interface SubjectReport {

@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './adminExam';
+export * from './adminExamDetail';
+export * from './adminExamInput';
+export * from './adminExamUpdate';
 export * from './adminGetUsersParams';
 export * from './adminStats';
 export * from './adminUserUpdate';

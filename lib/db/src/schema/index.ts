@@ -8,3 +8,4 @@ export * from "./exam_sessions";
 export * from "./exam_results";
 export * from "./user_answers";
 export * from "./notifications";
+export * from "./admin_exams";

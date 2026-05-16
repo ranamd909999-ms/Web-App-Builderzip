@@ -14,6 +14,7 @@ export interface AdminStats {
   totalSubjects: number;
   totalChapters: number;
   totalExams: number;
+  totalSessions?: number;
   premiumUsers: number;
   bannedUsers: number;
   recentRegistrations?: User[];

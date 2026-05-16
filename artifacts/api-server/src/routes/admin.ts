@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, usersTable, mcqsTable, subjectsTable, chaptersTable, examSessionsTable, examResultsTable } from "@workspace/db";
+import { db, usersTable, mcqsTable, subjectsTable, chaptersTable, examSessionsTable, examResultsTable, adminExamsTable } from "@workspace/db";
 import { eq, ilike, and, sql, desc } from "drizzle-orm";
 import { requireAuth, requireAdmin, type AuthRequest } from "../middlewares/auth";
 
@@ -54,7 +54,8 @@ router.get("/admin/stats", requireAuth, requireAdmin, async (_req, res): Promise
   const [totalMcqs] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(mcqsTable);
   const [totalSubjects] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(subjectsTable);
   const [totalChapters] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(chaptersTable);
-  const [totalExams] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(examSessionsTable);
+  const [totalExams] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(adminExamsTable);
+  const [totalSessions] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(examSessionsTable);
   const [premiumUsers] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(usersTable).where(eq(usersTable.isPremium, true));
   const [bannedUsers] = await db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(usersTable).where(eq(usersTable.isBanned, true));
   const recentReg = await db.select().from(usersTable).orderBy(desc(usersTable.createdAt)).limit(5);
@@ -66,6 +67,7 @@ router.get("/admin/stats", requireAuth, requireAdmin, async (_req, res): Promise
     totalSubjects: totalSubjects.count,
     totalChapters: totalChapters.count,
     totalExams: totalExams.count,
+    totalSessions: totalSessions.count,
     premiumUsers: premiumUsers.count,
     bannedUsers: bannedUsers.count,
     recentRegistrations: recentReg.map(({ passwordHash: _, ...u }) => u),

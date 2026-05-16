@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import {
   LayoutDashboard, BookOpen, Trophy, BarChart2, Bookmark, XCircle,
   LogOut, User, Shield, ChevronRight, Menu, X, Zap, Bell,
-  GraduationCap, FileText, Settings, BellDot
+  GraduationCap, FileText, Settings, BellDot, BookMarked
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useGetMyNotifications, useMarkNotificationRead } from "@workspace/api-client-react";
@@ -25,6 +25,7 @@ const adminNav = [
   { href: "/admin/subjects", label: "Subjects", icon: BookOpen },
   { href: "/admin/chapters", label: "Chapters", icon: GraduationCap },
   { href: "/admin/mcqs", label: "MCQs", icon: Zap },
+  { href: "/admin/exams", label: "Exams", icon: BookMarked },
   { href: "/admin/users", label: "Users", icon: User },
   { href: "/admin/reports", label: "Reports", icon: BarChart2 },
   { href: "/admin/notifications", label: "Notifications", icon: Bell },

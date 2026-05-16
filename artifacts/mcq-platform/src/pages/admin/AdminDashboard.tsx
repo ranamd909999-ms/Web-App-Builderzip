@@ -4,7 +4,7 @@ import { useAdminGetStats } from "@workspace/api-client-react";
 import Layout from "@/components/Layout";
 import {
   Users, BookOpen, Zap, BarChart2, Shield, ChevronRight,
-  Bell, TrendingUp, Award, Database
+  Bell, TrendingUp, Award, Database, BookMarked
 } from "lucide-react";
 
 function AdminStatCard({
@@ -36,6 +36,7 @@ const quickLinks = [
   { href: "/admin/subjects", label: "Manage Subjects", desc: "Add, edit or remove subjects", icon: BookOpen, gradient: "from-blue-500/10 to-blue-600/5", border: "border-blue-500/15 hover:border-blue-500/30", iconColor: "text-blue-400" },
   { href: "/admin/chapters", label: "Manage Chapters", desc: "Organize chapters within subjects", icon: Database, gradient: "from-purple-500/10 to-purple-600/5", border: "border-purple-500/15 hover:border-purple-500/30", iconColor: "text-purple-400" },
   { href: "/admin/mcqs", label: "Manage MCQs", desc: "Add, edit or bulk import questions", icon: Zap, gradient: "from-cyan-500/10 to-cyan-600/5", border: "border-cyan-500/15 hover:border-cyan-500/30", iconColor: "text-cyan-400" },
+  { href: "/admin/exams", label: "Manage Exams", desc: "Create and publish exams for students", icon: BookMarked, gradient: "from-violet-500/10 to-violet-600/5", border: "border-violet-500/15 hover:border-violet-500/30", iconColor: "text-violet-400" },
   { href: "/admin/users", label: "Manage Users", desc: "View and manage student accounts", icon: Users, gradient: "from-green-500/10 to-green-600/5", border: "border-green-500/15 hover:border-green-500/30", iconColor: "text-green-400" },
   { href: "/admin/reports", label: "Analytics & Reports", desc: "Platform-wide analytics and insights", icon: BarChart2, gradient: "from-orange-500/10 to-orange-600/5", border: "border-orange-500/15 hover:border-orange-500/30", iconColor: "text-orange-400" },
   { href: "/admin/notifications", label: "Notifications", desc: "Send alerts and announcements", icon: Bell, gradient: "from-pink-500/10 to-pink-600/5", border: "border-pink-500/15 hover:border-pink-500/30", iconColor: "text-pink-400" },
@@ -75,7 +76,7 @@ export default function AdminDashboard() {
                 { icon: BookOpen, label: "Subjects", value: stats?.totalSubjects ?? 0, href: "/admin/subjects", gradient: "stat-card-gradient-purple", iconBg: "bg-purple-500" },
                 { icon: Database, label: "Chapters", value: stats?.totalChapters ?? 0, href: "/admin/chapters", gradient: "stat-card-gradient-cyan", iconBg: "bg-cyan-500" },
                 { icon: Zap, label: "MCQs", value: stats?.totalMcqs ?? 0, href: "/admin/mcqs", gradient: "stat-card-gradient-green", iconBg: "bg-green-500" },
-                { icon: TrendingUp, label: "Total Exams", value: stats?.totalExams ?? 0, gradient: "stat-card-gradient-orange", iconBg: "bg-orange-500" },
+                { icon: BookMarked, label: "Total Exams", value: stats?.totalExams ?? 0, href: "/admin/exams", gradient: "stat-card-gradient-orange", iconBg: "bg-orange-500" },
                 { icon: Award, label: "Premium Users", value: stats?.premiumUsers ?? 0, gradient: "stat-card-gradient-pink", iconBg: "bg-pink-500" },
               ].map((s, i) => (
                 <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}>

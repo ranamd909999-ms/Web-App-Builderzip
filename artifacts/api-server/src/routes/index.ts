@@ -13,6 +13,7 @@ import statsRouter from "./stats";
 import adminRouter from "./admin";
 import usersRouter from "./users";
 import notificationsRouter from "./notifications";
+import adminExamsRouter from "./admin-exams";
 
 const router: IRouter = Router();
 
@@ -30,5 +31,6 @@ router.use(statsRouter);
 router.use(adminRouter);
 router.use(usersRouter);
 router.use(notificationsRouter);
+router.use(adminExamsRouter);
 
 export default router;

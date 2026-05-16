@@ -982,6 +982,153 @@ paths:
               schema:
                 $ref: "#/components/schemas/UnreadCount"
 
+  # Admin Exams
+  /admin/exams:
+    get:
+      operationId: adminListExams
+      tags: [admin]
+      summary: List all admin-created exams
+      responses:
+        "200":
+          description: List of admin exams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminExam"
+    post:
+      operationId: adminCreateExam
+      tags: [admin]
+      summary: Create a new admin exam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminExamInput"
+      responses:
+        "201":
+          description: Created exam
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminExam"
+
+  /admin/exams/{id}:
+    get:
+      operationId: adminGetExam
+      tags: [admin]
+      summary: Get admin exam with questions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Admin exam details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminExamDetail"
+    patch:
+      operationId: adminUpdateExam
+      tags: [admin]
+      summary: Update an admin exam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminExamUpdate"
+      responses:
+        "200":
+          description: Updated exam
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminExam"
+    delete:
+      operationId: adminDeleteExam
+      tags: [admin]
+      summary: Delete an admin exam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /admin/exams/{id}/mcqs:
+    get:
+      operationId: adminGetExamMcqs
+      tags: [admin]
+      summary: Get MCQs for an admin exam
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: MCQ list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mcq"
+
+  /admin-exams/published:
+    get:
+      operationId: getPublishedExams
+      tags: [admin]
+      summary: Get published exams (for students)
+      responses:
+        "200":
+          description: Published exams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminExam"
+
+  /admin-exams/{id}/start:
+    post:
+      operationId: startAdminExam
+      tags: [admin]
+      summary: Start an admin exam as a student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "201":
+          description: Exam session started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamSession"
+
 components:
   schemas:
     HealthStatus:
@@ -1599,6 +1746,8 @@ components:
           type: integer
         totalExams:
           type: integer
+        totalSessions:
+          type: integer
         premiumUsers:
           type: integer
         bannedUsers:
@@ -1607,6 +1756,111 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/User"
+
+    AdminExam:
+      type: object
+      required: [id, title, durationMinutes, totalMarks, passMarks, isPublished, createdBy, createdAt, questionCount]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        subjectId:
+          type: integer
+          nullable: true
+        subjectName:
+          type: string
+          nullable: true
+        chapterIds:
+          type: array
+          items:
+            type: integer
+        mcqIds:
+          type: array
+          items:
+            type: integer
+        durationMinutes:
+          type: integer
+        totalMarks:
+          type: integer
+        passMarks:
+          type: integer
+        isPublished:
+          type: boolean
+        questionCount:
+          type: integer
+        createdBy:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    AdminExamDetail:
+      allOf:
+        - $ref: "#/components/schemas/AdminExam"
+        - type: object
+          properties:
+            mcqs:
+              type: array
+              items:
+                $ref: "#/components/schemas/Mcq"
+
+    AdminExamInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        subjectId:
+          type: integer
+        chapterIds:
+          type: array
+          items:
+            type: integer
+        mcqIds:
+          type: array
+          items:
+            type: integer
+        durationMinutes:
+          type: integer
+        totalMarks:
+          type: integer
+        passMarks:
+          type: integer
+        isPublished:
+          type: boolean
+
+    AdminExamUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        subjectId:
+          type: integer
+        chapterIds:
+          type: array
+          items:
+            type: integer
+        mcqIds:
+          type: array
+          items:
+            type: integer
+        durationMinutes:
+          type: integer
+        totalMarks:
+          type: integer
+        passMarks:
+          type: integer
+        isPublished:
+          type: boolean
 
     SubjectReport:
       type: object

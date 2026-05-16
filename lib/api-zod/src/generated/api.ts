@@ -804,6 +804,7 @@ export const AdminGetStatsResponse = zod.object({
   "totalSubjects": zod.number(),
   "totalChapters": zod.number(),
   "totalExams": zod.number(),
+  "totalSessions": zod.number().optional(),
   "premiumUsers": zod.number(),
   "bannedUsers": zod.number(),
   "recentRegistrations": zod.array(zod.object({
@@ -987,6 +988,193 @@ export const MarkNotificationReadParams = zod.object({
  */
 export const GetUnreadCountResponse = zod.object({
   "unreadCount": zod.number()
+})
+
+
+/**
+ * @summary List all admin-created exams
+ */
+export const AdminListExamsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "subjectId": zod.number().nullish(),
+  "subjectName": zod.string().nullish(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number(),
+  "totalMarks": zod.number(),
+  "passMarks": zod.number(),
+  "isPublished": zod.boolean(),
+  "questionCount": zod.number(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string().optional()
+})
+export const AdminListExamsResponse = zod.array(AdminListExamsResponseItem)
+
+
+/**
+ * @summary Create a new admin exam
+ */
+export const AdminCreateExamBody = zod.object({
+  "title": zod.string(),
+  "description": zod.string().optional(),
+  "subjectId": zod.number().optional(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number().optional(),
+  "totalMarks": zod.number().optional(),
+  "passMarks": zod.number().optional(),
+  "isPublished": zod.boolean().optional()
+})
+
+
+/**
+ * @summary Get admin exam with questions
+ */
+export const AdminGetExamParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminGetExamResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "subjectId": zod.number().nullish(),
+  "subjectName": zod.string().nullish(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number(),
+  "totalMarks": zod.number(),
+  "passMarks": zod.number(),
+  "isPublished": zod.boolean(),
+  "questionCount": zod.number(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string().optional()
+}).and(zod.object({
+  "mcqs": zod.array(zod.object({
+  "id": zod.number(),
+  "chapterId": zod.number(),
+  "subjectId": zod.number(),
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctOption": zod.number(),
+  "explanation": zod.string().nullish(),
+  "explanationImage": zod.string().nullish(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']),
+  "isBookmarked": zod.boolean(),
+  "isWrong": zod.boolean(),
+  "tags": zod.array(zod.string()).optional(),
+  "createdAt": zod.string().optional()
+})).optional()
+}))
+
+
+/**
+ * @summary Update an admin exam
+ */
+export const AdminUpdateExamParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminUpdateExamBody = zod.object({
+  "title": zod.string().optional(),
+  "description": zod.string().optional(),
+  "subjectId": zod.number().optional(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number().optional(),
+  "totalMarks": zod.number().optional(),
+  "passMarks": zod.number().optional(),
+  "isPublished": zod.boolean().optional()
+})
+
+export const AdminUpdateExamResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "subjectId": zod.number().nullish(),
+  "subjectName": zod.string().nullish(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number(),
+  "totalMarks": zod.number(),
+  "passMarks": zod.number(),
+  "isPublished": zod.boolean(),
+  "questionCount": zod.number(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string().optional()
+})
+
+
+/**
+ * @summary Delete an admin exam
+ */
+export const AdminDeleteExamParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminDeleteExamResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Get MCQs for an admin exam
+ */
+export const AdminGetExamMcqsParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const AdminGetExamMcqsResponseItem = zod.object({
+  "id": zod.number(),
+  "chapterId": zod.number(),
+  "subjectId": zod.number(),
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctOption": zod.number(),
+  "explanation": zod.string().nullish(),
+  "explanationImage": zod.string().nullish(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']),
+  "isBookmarked": zod.boolean(),
+  "isWrong": zod.boolean(),
+  "tags": zod.array(zod.string()).optional(),
+  "createdAt": zod.string().optional()
+})
+export const AdminGetExamMcqsResponse = zod.array(AdminGetExamMcqsResponseItem)
+
+
+/**
+ * @summary Get published exams (for students)
+ */
+export const GetPublishedExamsResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "subjectId": zod.number().nullish(),
+  "subjectName": zod.string().nullish(),
+  "chapterIds": zod.array(zod.number()).optional(),
+  "mcqIds": zod.array(zod.number()).optional(),
+  "durationMinutes": zod.number(),
+  "totalMarks": zod.number(),
+  "passMarks": zod.number(),
+  "isPublished": zod.boolean(),
+  "questionCount": zod.number(),
+  "createdBy": zod.number(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string().optional()
+})
+export const GetPublishedExamsResponse = zod.array(GetPublishedExamsResponseItem)
+
+
+/**
+ * @summary Start an admin exam as a student
+ */
+export const StartAdminExamParams = zod.object({
+  "id": zod.coerce.number()
 })
 
 

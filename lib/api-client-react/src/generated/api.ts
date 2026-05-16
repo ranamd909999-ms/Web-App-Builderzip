@@ -20,6 +20,10 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AdminExam,
+  AdminExamDetail,
+  AdminExamInput,
+  AdminExamUpdate,
   AdminGetUsersParams,
   AdminStats,
   AdminUserUpdate,
@@ -3789,4 +3793,595 @@ export function useGetUnreadCount<TData = Awaited<ReturnType<typeof getUnreadCou
 
 
 
+
+export const getAdminListExamsUrl = () => {
+
+
+
+
+  return `/api/admin/exams`
+}
+
+/**
+ * @summary List all admin-created exams
+ */
+export const adminListExams = async ( options?: RequestInit): Promise<AdminExam[]> => {
+
+  return customFetch<AdminExam[]>(getAdminListExamsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminListExamsQueryKey = () => {
+    return [
+    `/api/admin/exams`
+    ] as const;
+    }
+
+
+export const getAdminListExamsQueryOptions = <TData = Awaited<ReturnType<typeof adminListExams>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListExams>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminListExamsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminListExams>>> = ({ signal }) => adminListExams({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminListExams>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminListExamsQueryResult = NonNullable<Awaited<ReturnType<typeof adminListExams>>>
+export type AdminListExamsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all admin-created exams
+ */
+
+export function useAdminListExams<TData = Awaited<ReturnType<typeof adminListExams>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminListExams>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminListExamsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAdminCreateExamUrl = () => {
+
+
+
+
+  return `/api/admin/exams`
+}
+
+/**
+ * @summary Create a new admin exam
+ */
+export const adminCreateExam = async (adminExamInput: AdminExamInput, options?: RequestInit): Promise<AdminExam> => {
+
+  return customFetch<AdminExam>(getAdminCreateExamUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      adminExamInput,)
+  }
+);}
+
+
+
+
+export const getAdminCreateExamMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCreateExam>>, TError,{data: BodyType<AdminExamInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminCreateExam>>, TError,{data: BodyType<AdminExamInput>}, TContext> => {
+
+const mutationKey = ['adminCreateExam'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminCreateExam>>, {data: BodyType<AdminExamInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  adminCreateExam(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminCreateExamMutationResult = NonNullable<Awaited<ReturnType<typeof adminCreateExam>>>
+    export type AdminCreateExamMutationBody = BodyType<AdminExamInput>
+    export type AdminCreateExamMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Create a new admin exam
+ */
+export const useAdminCreateExam = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminCreateExam>>, TError,{data: BodyType<AdminExamInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminCreateExam>>,
+        TError,
+        {data: BodyType<AdminExamInput>},
+        TContext
+      > => {
+      return useMutation(getAdminCreateExamMutationOptions(options));
+    }
+
+export const getAdminGetExamUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/exams/${id}`
+}
+
+/**
+ * @summary Get admin exam with questions
+ */
+export const adminGetExam = async (id: number, options?: RequestInit): Promise<AdminExamDetail> => {
+
+  return customFetch<AdminExamDetail>(getAdminGetExamUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminGetExamQueryKey = (id: number,) => {
+    return [
+    `/api/admin/exams/${id}`
+    ] as const;
+    }
+
+
+export const getAdminGetExamQueryOptions = <TData = Awaited<ReturnType<typeof adminGetExam>>, TError = ErrorType<unknown>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetExam>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminGetExamQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminGetExam>>> = ({ signal }) => adminGetExam(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminGetExam>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminGetExamQueryResult = NonNullable<Awaited<ReturnType<typeof adminGetExam>>>
+export type AdminGetExamQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get admin exam with questions
+ */
+
+export function useAdminGetExam<TData = Awaited<ReturnType<typeof adminGetExam>>, TError = ErrorType<unknown>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetExam>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminGetExamQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getAdminUpdateExamUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/exams/${id}`
+}
+
+/**
+ * @summary Update an admin exam
+ */
+export const adminUpdateExam = async (id: number,
+    adminExamUpdate: AdminExamUpdate, options?: RequestInit): Promise<AdminExam> => {
+
+  return customFetch<AdminExam>(getAdminUpdateExamUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      adminExamUpdate,)
+  }
+);}
+
+
+
+
+export const getAdminUpdateExamMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateExam>>, TError,{id: number;data: BodyType<AdminExamUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminUpdateExam>>, TError,{id: number;data: BodyType<AdminExamUpdate>}, TContext> => {
+
+const mutationKey = ['adminUpdateExam'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminUpdateExam>>, {id: number;data: BodyType<AdminExamUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  adminUpdateExam(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminUpdateExamMutationResult = NonNullable<Awaited<ReturnType<typeof adminUpdateExam>>>
+    export type AdminUpdateExamMutationBody = BodyType<AdminExamUpdate>
+    export type AdminUpdateExamMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Update an admin exam
+ */
+export const useAdminUpdateExam = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminUpdateExam>>, TError,{id: number;data: BodyType<AdminExamUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminUpdateExam>>,
+        TError,
+        {id: number;data: BodyType<AdminExamUpdate>},
+        TContext
+      > => {
+      return useMutation(getAdminUpdateExamMutationOptions(options));
+    }
+
+export const getAdminDeleteExamUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/exams/${id}`
+}
+
+/**
+ * @summary Delete an admin exam
+ */
+export const adminDeleteExam = async (id: number, options?: RequestInit): Promise<MessageResponse> => {
+
+  return customFetch<MessageResponse>(getAdminDeleteExamUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getAdminDeleteExamMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminDeleteExam>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof adminDeleteExam>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['adminDeleteExam'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof adminDeleteExam>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  adminDeleteExam(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AdminDeleteExamMutationResult = NonNullable<Awaited<ReturnType<typeof adminDeleteExam>>>
+
+    export type AdminDeleteExamMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Delete an admin exam
+ */
+export const useAdminDeleteExam = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof adminDeleteExam>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof adminDeleteExam>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getAdminDeleteExamMutationOptions(options));
+    }
+
+export const getAdminGetExamMcqsUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin/exams/${id}/mcqs`
+}
+
+/**
+ * @summary Get MCQs for an admin exam
+ */
+export const adminGetExamMcqs = async (id: number, options?: RequestInit): Promise<Mcq[]> => {
+
+  return customFetch<Mcq[]>(getAdminGetExamMcqsUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getAdminGetExamMcqsQueryKey = (id: number,) => {
+    return [
+    `/api/admin/exams/${id}/mcqs`
+    ] as const;
+    }
+
+
+export const getAdminGetExamMcqsQueryOptions = <TData = Awaited<ReturnType<typeof adminGetExamMcqs>>, TError = ErrorType<unknown>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetExamMcqs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getAdminGetExamMcqsQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof adminGetExamMcqs>>> = ({ signal }) => adminGetExamMcqs(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof adminGetExamMcqs>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type AdminGetExamMcqsQueryResult = NonNullable<Awaited<ReturnType<typeof adminGetExamMcqs>>>
+export type AdminGetExamMcqsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get MCQs for an admin exam
+ */
+
+export function useAdminGetExamMcqs<TData = Awaited<ReturnType<typeof adminGetExamMcqs>>, TError = ErrorType<unknown>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof adminGetExamMcqs>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getAdminGetExamMcqsQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPublishedExamsUrl = () => {
+
+
+
+
+  return `/api/admin-exams/published`
+}
+
+/**
+ * @summary Get published exams (for students)
+ */
+export const getPublishedExams = async ( options?: RequestInit): Promise<AdminExam[]> => {
+
+  return customFetch<AdminExam[]>(getGetPublishedExamsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPublishedExamsQueryKey = () => {
+    return [
+    `/api/admin-exams/published`
+    ] as const;
+    }
+
+
+export const getGetPublishedExamsQueryOptions = <TData = Awaited<ReturnType<typeof getPublishedExams>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublishedExams>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPublishedExamsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublishedExams>>> = ({ signal }) => getPublishedExams({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPublishedExams>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPublishedExamsQueryResult = NonNullable<Awaited<ReturnType<typeof getPublishedExams>>>
+export type GetPublishedExamsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get published exams (for students)
+ */
+
+export function useGetPublishedExams<TData = Awaited<ReturnType<typeof getPublishedExams>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublishedExams>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPublishedExamsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getStartAdminExamUrl = (id: number,) => {
+
+
+
+
+  return `/api/admin-exams/${id}/start`
+}
+
+/**
+ * @summary Start an admin exam as a student
+ */
+export const startAdminExam = async (id: number, options?: RequestInit): Promise<ExamSession> => {
+
+  return customFetch<ExamSession>(getStartAdminExamUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getStartAdminExamMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startAdminExam>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof startAdminExam>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['startAdminExam'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startAdminExam>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  startAdminExam(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartAdminExamMutationResult = NonNullable<Awaited<ReturnType<typeof startAdminExam>>>
+
+    export type StartAdminExamMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Start an admin exam as a student
+ */
+export const useStartAdminExam = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startAdminExam>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof startAdminExam>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getStartAdminExamMutationOptions(options));
+    }
 
